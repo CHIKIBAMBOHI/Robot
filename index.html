@@ -4,170 +4,273 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Robot</title>
+
 <style>
 html,body{margin:0;background:black;overflow:hidden;font-family:sans-serif;height:100%;}
 
-/* ЭКРАН И ГЛАЗА */
-#screen{width:100vw;height:100vh;display:flex;justify-content:center;align-items:center;gap:6vw;position:relative;}
-.eye{width:42vw;height:14vh;background:#9b4dff;border-radius:12px;
-box-shadow:0 0 40px #9b4dff,0 0 80px #7a2cff,inset 0 0 20px rgba(255,255,255,0.3),inset 0 -15px 30px rgba(0,0,0,0.4);transition:0.25s;}
+/* экран */
+#screen{width:100vw;height:100vh;display:flex;justify-content:center;align-items:center;gap:6vw;}
+.eye{
+width:42vw;height:14vh;background:#9b4dff;border-radius:14px;
+box-shadow:0 0 40px #9b4dff,0 0 80px #7a2cff,inset 0 0 20px rgba(255,255,255,0.3);
+transition:0.2s;
+}
 .closed{transform:scaleY(0.2);}
 
-/* РОМБИКИ */
-.star{position:absolute;width:12px;height:12px;background:white;transform:rotate(45deg);animation:starPop 0.6s linear;}
-@keyframes starPop{0%{transform:scale(0) rotate(45deg);opacity:1;}100%{transform:scale(2) rotate(45deg);opacity:0;}}
+/* ромбики */
+.star{
+position:absolute;width:12px;height:12px;background:white;
+transform:rotate(45deg);animation:pop 0.6s linear;
+}
+@keyframes pop{
+0%{opacity:1;transform:scale(0) rotate(45deg);}
+100%{opacity:0;transform:scale(2) rotate(45deg);}
+}
 
-/* Кнопка fullscreen */
-#fullscreenBtn{position:fixed;top:10px;left:10px;z-index:999;background:rgba(155,77,255,0.4);color:white;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;transition:0.3s;}
-#fullscreenBtn:hover{background: rgba(155,77,255,0.7);}
+/* кнопка */
+#fullscreenBtn{
+position:fixed;top:10px;left:10px;
+background:#9b4dff;color:white;border:none;
+padding:6px 10px;border-radius:6px;z-index:999;
+}
 
 /* МЕНЮ */
-#menu,#pay{position:fixed;top:0;left:0;width:100%;height:100%;background:#12001a;display:none;flex-direction:column;align-items:center;color:white;overflow:auto;}
-.title{font-size:30px;margin:20px;color:#9b4dff;text-shadow:0 0 10px #9b4dff;}
-.categories{display:flex;gap:20px;margin-bottom:10px;}
-.categories button{background:#9b4dff;border:none;padding:12px 18px;border-radius:10px;color:white;font-size:18px;cursor:pointer;transition:0.3s;}
-.categories button:hover{background:#7a2cff;}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:25px;padding:20px;width:90%;}
-.card{background:#1b002e;border-radius:16px;box-shadow:0 0 25px #9b4dff;padding:10px;text-align:center;transition:0.3s;}
-.card:hover{transform:translateY(-5px);box-shadow:0 0 40px #9b4dff;}
-.card img{width:100%;height:180px;object-fit:cover;border-radius:10px;}
-.card h3{margin:8px 0 4px;color:#fff;}
-.card p{margin:0;color:#ccc;font-weight:bold;}
-.card button{margin-top:8px;background:#9b4dff;border:none;padding:8px 12px;border-radius:8px;color:white;cursor:pointer;transition:0.3s;}
-.card button:hover{background:#7a2cff;}
+#menu,#pay{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:linear-gradient(180deg,#12001a,#000);
+display:none;flex-direction:column;align-items:center;
+color:white;overflow:auto;
+}
 
-/* ОПЛАТА */
-.payBox{background:#1b002e;padding:50px;border-radius:20px;box-shadow:0 0 40px #9b4dff;text-align:center;margin-top:50px;color:white;width:80%;max-width:500px;}
-.payBox h2{color:#9b4dff;font-size:32px;margin-bottom:15px;}
-.payBox p{font-size:20px;margin-bottom:20px;}
-.payBox button{padding:10px 20px;font-size:18px;margin:5px;border-radius:10px;border:none;background:#9b4dff;color:white;cursor:pointer;transition:0.3s;}
-.payBox button:hover{background:#7a2cff;}
+.title{
+font-size:32px;
+margin:20px;
+color:#caa6ff;
+text-shadow:0 0 20px #9b4dff;
+}
+
+/* кнопки категорий */
+.categories{
+display:flex;gap:15px;margin-bottom:10px;
+}
+.categories button{
+background:#9b4dff;border:none;padding:12px 18px;
+border-radius:12px;color:white;font-size:16px;
+box-shadow:0 0 15px #9b4dff;
+}
+
+/* сетка */
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+padding:20px;
+width:90%;
+}
+
+/* карточки */
+.card{
+background:#1b002e;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 0 25px #9b4dff;
+transition:0.3s;
+}
+.card:hover{
+transform:scale(1.05);
+box-shadow:0 0 50px #9b4dff;
+}
+.card img{
+width:100%;
+height:160px;
+object-fit:cover;
+}
+.card h3{margin:10px;}
+.card p{margin:0 10px 10px;color:#ccc;}
+.card button{
+margin:10px;
+width:calc(100% - 20px);
+background:#9b4dff;border:none;
+padding:10px;border-radius:10px;color:white;
+}
+
+/* ПОЛНОЭКРАННАЯ ОПЛАТА */
+#pay{
+justify-content:center;
+}
+
+.payFull{
+width:90%;
+max-width:400px;
+background:#1b002e;
+border-radius:20px;
+padding:25px;
+box-shadow:0 0 40px #9b4dff;
+text-align:center;
+animation:fade 0.4s;
+}
+
+@keyframes fade{
+from{opacity:0;transform:scale(0.9);}
+to{opacity:1;transform:scale(1);}
+}
+
+.payFull h2{color:#caa6ff;}
+.payFull p{font-size:18px;margin:10px 0;}
+
+.payFull button{
+margin-top:10px;
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#9b4dff;
+color:white;
+font-size:16px;
+}
+
 </style>
 </head>
+
 <body>
 
-<button id="fullscreenBtn" onclick="goFullscreen()">⛶</button>
+<button id="fullscreenBtn" onclick="document.documentElement.requestFullscreen()">⛶</button>
 
 <div id="screen">
-  <div class="eye"></div>
-  <div class="eye"></div>
+<div class="eye"></div>
+<div class="eye"></div>
 </div>
 
 <div id="menu">
-  <div class="title">Меню</div>
-  <div class="categories">
-    <button onclick="food()">🍔 Еда</button>
-    <button onclick="office()">✏ Канцелярия</button>
-    <button onclick="closeMenu()">⬅ Назад</button>
-  </div>
-  <div id="items" class="grid"></div>
+<div class="title">Меню</div>
+
+<div class="categories">
+<button onclick="food()">🍔 Еда</button>
+<button onclick="office()">✏ Канцелярия</button>
+<button onclick="closeMenu()">⬅ Назад</button>
 </div>
 
-<div id="pay">
-  <div class="payBox">
-    <h2>Оплата</h2>
-    <p id="product"></p>
-    <button onclick="confirmPay()">💳 Оплатить</button>
-    <button onclick="cancelPay()">⬅ Назад</button>
-  </div>
+<div id="items" class="grid"></div>
 </div>
+
+<div id="pay"></div>
 
 <script>
-/* FULLSCREEN */
-function goFullscreen(){
-  let el=document.documentElement;
-  if(el.requestFullscreen){el.requestFullscreen();}
-}
 
-/* ТРИ КЛИКА ОТКРЫВАЮТ МЕНЮ */
+/* открыть меню */
 let clicks=0;
 document.querySelectorAll(".eye").forEach(e=>{
-  e.onclick=()=>{
-    clicks++;
-    if(clicks==3){menu.style.display="flex";clicks=0;}
-  }
+e.onclick=()=>{
+clicks++;
+if(clicks==3){menu.style.display="flex";clicks=0;}
+}
 });
 
-/* МОРГАНИЕ */
-function blink(){
-  document.querySelectorAll(".eye").forEach(e=>e.classList.add("closed"));
-  setTimeout(()=>document.querySelectorAll(".eye").forEach(e=>e.classList.remove("closed")),180);
-}
-setInterval(blink,4000);
+/* моргание */
+setInterval(()=>{
+document.querySelectorAll(".eye").forEach(e=>e.classList.add("closed"));
+setTimeout(()=>{
+document.querySelectorAll(".eye").forEach(e=>e.classList.remove("closed"));
+},150);
+},4000);
 
-/* ГЛАЖКА (жмурение глаз + ромбики) */
-let petting=false;
+/* ГЛАЖКА */
+let pet=false;
 document.addEventListener("touchmove",petRobot);
-document.addEventListener("mousemove",(e)=>{if(e.buttons===1) petRobot();});
+document.addEventListener("mousemove",e=>{if(e.buttons===1) petRobot();});
 
 function petRobot(){
-  if(petting) return;
-  let screenVisible = window.getComputedStyle(document.getElementById("screen")).display !== "none";
-  if(!screenVisible) return;
-  petting=true;
+if(pet)return;
+if(menu.style.display==="flex"||pay.style.display==="flex")return;
 
-  // жмурим глаза
-  document.querySelectorAll(".eye").forEach(e=>e.classList.add("closed"));
+pet=true;
 
-  // ромбики возле глаз
-  let eyes = document.querySelectorAll(".eye");
-  eyes.forEach(eye=>{
-    for(let i=0;i<4;i++){
-      let star = document.createElement("div");
-      star.className = "star";
-      let rect = eye.getBoundingClientRect();
-      star.style.left = (rect.left + Math.random()*rect.width)+"px";
-      star.style.top  = (rect.top  + Math.random()*rect.height)+"px";
-      document.body.appendChild(star);
-      setTimeout(()=>star.remove(),600);
-    }
-  });
+/* жмурится */
+document.querySelectorAll(".eye").forEach(e=>e.classList.add("closed"));
 
-  setTimeout(()=>{
-    document.querySelectorAll(".eye").forEach(e=>e.classList.remove("closed"));
-    petting=false;
-  },400);
+/* ромбики */
+document.querySelectorAll(".eye").forEach(eye=>{
+let r=eye.getBoundingClientRect();
+for(let i=0;i<4;i++){
+let s=document.createElement("div");
+s.className="star";
+s.style.left=(r.left+Math.random()*r.width)+"px";
+s.style.top=(r.top+Math.random()*r.height)+"px";
+document.body.appendChild(s);
+setTimeout(()=>s.remove(),600);
+}
+});
+
+setTimeout(()=>{
+document.querySelectorAll(".eye").forEach(e=>e.classList.remove("closed"));
+pet=false;
+},300);
 }
 
-/* МЕНЮ */
+/* меню */
 function closeMenu(){menu.style.display="none";items.innerHTML="";}
-function selectItem(name,price){
-  product.innerText=name+" — "+price;
-  menu.style.display="none";
-  pay.style.display="flex";
+
+/* выбор */
+let selectedName="",selectedPrice="";
+function selectItem(n,p){
+selectedName=n;
+selectedPrice=p;
+menu.style.display="none";
+showPay();
 }
+
+/* КРАСИВАЯ ОПЛАТА */
+function showPay(){
+pay.style.display="flex";
+pay.innerHTML=`
+<div class="payFull">
+<h2>Оплата</h2>
+<p>${selectedName}</p>
+<p>${selectedPrice}</p>
+<button onclick="confirmPay()">Оплатить</button>
+<button onclick="cancelPay()">Назад</button>
+</div>`;
+}
+
 function confirmPay(){
-  let priceText = product.innerText.split("—")[1].trim();
-  let nameText = product.innerText.split("—")[0].trim();
-  pay.innerHTML=`<div class="payBox">
-    <h2>✅ Оплата прошла успешно</h2>
-    <p>${nameText} — ${priceText}</p>
-    <button onclick="location.reload()">Вернуться</button>
-  </div>`;
+pay.innerHTML=`
+<div class="payFull">
+<h2>✅ Успешно оплачено</h2>
+<p>${selectedName}</p>
+<p>Сумма: ${selectedPrice}</p>
+<button onclick="location.reload()">Готово</button>
+</div>`;
 }
-function cancelPay(){pay.style.display="none";menu.style.display="flex";}
+
+function cancelPay(){
+pay.style.display="none";
+menu.style.display="flex";
+}
 
 /* ЕДА */
 function food(){
 items.innerHTML=`
-<div class="card"><img src="https://avatars.mds.yandex.net/get-entity_search/2040540/1237300690/S600xU_2x"><h3>Хотдог</h3><p>150 ₽</p><button onclick="selectItem('Хотдог','150 ₽')">Заказать</button></div>
-<div class="card"><img src="https://img.povar.ru/mobile/74/21/9a/af/meksikanskaya_ostraya_picca-864248.JPG"><h3>Пицца</h3><p>300 ₽</p><button onclick="selectItem('Пицца','300 ₽')">Заказать</button></div>
-<div class="card"><img src="https://avatars.mds.yandex.net/get-entity_search/5509992/1248226391/S600xU_2x"><h3>Бургер</h3><p>250 ₽</p><button onclick="selectItem('Бургер','250 ₽')">Заказать</button></div>
-<div class="card"><img src="https://avatars.mds.yandex.net/get-entity_search/5098055/1229408585/S600xU_2x"><h3>Бутерброд</h3><p>150 ₽</p><button onclick="selectItem('Бутерброд','150 ₽')">Заказать</button></div>
-<div class="card"><img src="https://avatars.mds.yandex.net/i?id=76b4b6b59652a1ab9d97ebf45a29d681_l-5447262-images-thumbs&n=13"><h3>Картошка фри</h3><p>100 ₽</p><button onclick="selectItem('Фри','100 ₽')">Заказать</button></div>
-<div class="card"><img src="https://avatars.mds.yandex.net/i?id=2296b0d89a459fc3c08f83461d399b08_l-5749428-images-thumbs&n=13"><h3>Салат</h3><p>200 ₽</p><button onclick="selectItem('Салат','200 ₽')">Заказать</button></div>`;
+<div class="card"><img src="https://avatars.mds.yandex.net/get-entity_search/2040540/1237300690/S600xU_2x"><h3>Хотдог</h3><p>150 ₽</p><button onclick="selectItem('Хотдог','150 ₽')">Купить</button></div>
+<div class="card"><img src="https://img.povar.ru/mobile/74/21/9a/af/meksikanskaya_ostraya_picca-864248.JPG"><h3>Пицца</h3><p>300 ₽</p><button onclick="selectItem('Пицца','300 ₽')">Купить</button></div>
+<div class="card"><img src="https://avatars.mds.yandex.net/get-entity_search/5509992/1248226391/S600xU_2x"><h3>Бургер</h3><p>250 ₽</p><button onclick="selectItem('Бургер','250 ₽')">Купить</button></div>
+<div class="card"><img src="https://avatars.mds.yandex.net/get-entity_search/5098055/1229408585/S600xU_2x"><h3>Бутерброд</h3><p>150 ₽</p><button onclick="selectItem('Бутерброд','150 ₽')">Купить</button></div>
+<div class="card"><img src="https://avatars.mds.yandex.net/i?id=76b4b6b59652a1ab9d97ebf45a29d681_l-5447262-images-thumbs&n=13"><h3>Фри</h3><p>100 ₽</p><button onclick="selectItem('Фри','100 ₽')">Купить</button></div>
+<div class="card"><img src="https://avatars.mds.yandex.net/i?id=2296b0d89a459fc3c08f83461d399b08_l-5749428-images-thumbs&n=13"><h3>Салат</h3><p>200 ₽</p><button onclick="selectItem('Салат','200 ₽')">Купить</button></div>
+`;
 }
 
 /* КАНЦЕЛЯРИЯ */
 function office(){
 items.innerHTML=`
-<div class="card"><img src="https://avatars.mds.yandex.net/i?id=a97862084887480f9a5c0313049fc016_sr-7683610-images-thumbs&n=13"><h3>Маркер</h3><p>120 ₽</p><button onclick="selectItem('Маркер','120 ₽')">Заказать</button></div>
-<div class="card"><img src="https://avelot.ru/upload/iblock/f91/ufbbw8pgto2ep8hauwuru1qr94uhpvx3/lastik_koh_i_noor_6312_karandash_6312036001td.jpg"><h3>Карандаш</h3><p>50 ₽</p><button onclick="selectItem('Карандаш','50 ₽')">Заказать</button></div>
-<div class="card"><img src="https://avatars.mds.yandex.net/i?id=fb39a836e5520a93af757753a43bc318_l-14907266-images-thumbs&n=13"><h3>Ластик</h3><p>40 ₽</p><button onclick="selectItem('Ластик','40 ₽')">Заказать</button></div>
-<div class="card"><img src="https://storage.yandexcloud.net/mostro-gm-media/d7c3392d-c86a-ab3c-c337-c04bab8f3080/5R00RAD.jpg"><h3>Стружилка</h3><p>70 ₽</p><button onclick="selectItem('Стружилка','70 ₽')">Заказать</button></div>
-<div class="card"><img src="https://ir.ozone.ru/s3/multimedia-j/c600/6338507227.jpg"><h3>Ручка</h3><p>60 ₽</p><button onclick="selectItem('Ручка','60 ₽')">Заказать</button></div>
-<div class="card"><img src="https://main-cdn.sbermegamarket.ru/big1/hlr-system/843/373/478/122/112/4/100062614347b0.jpeg"><h3>Тетрадь</h3><p>80 ₽</p><button onclick="selectItem('Тетрадь','80 ₽')">Заказать</button></div>`;
+<div class="card"><img src="https://avatars.mds.yandex.net/i?id=a97862084887480f9a5c0313049fc016_sr-7683610-images-thumbs&n=13"><h3>Маркер</h3><p>120 ₽</p><button onclick="selectItem('Маркер','120 ₽')">Купить</button></div>
+<div class="card"><img src="https://avelot.ru/upload/iblock/f91/ufbbw8pgto2ep8hauwuru1qr94uhpvx3/lastik_koh_i_noor_6312_karandash_6312036001td.jpg"><h3>Карандаш</h3><p>50 ₽</p><button onclick="selectItem('Карандаш','50 ₽')">Купить</button></div>
+<div class="card"><img src="https://avatars.mds.yandex.net/i?id=fb39a836e5520a93af757753a43bc318_l-14907266-images-thumbs&n=13"><h3>Ластик</h3><p>40 ₽</p><button onclick="selectItem('Ластик','40 ₽')">Купить</button></div>
+<div class="card"><img src="https://storage.yandexcloud.net/mostro-gm-media/d7c3392d-c86a-ab3c-c337-c04bab8f3080/5R00RAD.jpg"><h3>Точилка</h3><p>70 ₽</p><button onclick="selectItem('Точилка','70 ₽')">Купить</button></div>
+<div class="card"><img src="https://ir.ozone.ru/s3/multimedia-j/c600/6338507227.jpg"><h3>Ручка</h3><p>60 ₽</p><button onclick="selectItem('Ручка','60 ₽')">Купить</button></div>
+<div class="card"><img src="https://main-cdn.sbermegamarket.ru/big1/hlr-system/843/373/478/122/112/4/100062614347b0.jpeg"><h3>Тетрадь</h3><p>80 ₽</p><button onclick="selectItem('Тетрадь','80 ₽')">Купить</button></div>
+`;
 }
+
 </script>
 </body>
 </html>
